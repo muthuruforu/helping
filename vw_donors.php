@@ -5,6 +5,42 @@
 <title>E-Blood Donation Forum | Admin Profile</title>
 <link href="Style.css" rel="stylesheet" type="text/css" />
 
+<link href="css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+<link href="css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+<script src="js/jquery-1.10.2.js"></script>
+<script type="text/javascript" language="javascript" src="js/jquery.dataTables.min.js"></script>
+
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
+
+<script>
+
+	function myfunction(t)
+	{
+    $('#example').DataTable({
+        "ajax": "vw_ajaxdonar.php?ajaxid="+t,
+		 "bProcessing": true, 
+		 "bServerSide": true,
+		  "searching": true,
+		"columns": [
+            { "data": "donar_id" },
+            { "data": "donar_name" },
+            { "data": "donar_age" },
+			{ "data": "donar_gender" },
+			{ "data": "donar_dob" },
+			{ "data": "donar_weight" },
+            { "data": "donar_state" },
+			{ "data": "donar_city" },
+			{ "data": "donar_pincode" },
+            { "data": "donar_mobile" },
+            { "data": "donar_email" },
+            { "data": "donar_bg" }
+        ],
+		"bDestroy": true
+    });
+	}	
+</script>
 </head>
 
 <body>
@@ -47,14 +83,14 @@
   <p>&nbsp;</p>
   </div>
 </div>
-<br /><br /><br /><br /><br /><br /><div style="width:700px" id="apDiv1">
+<br /><br /><br /><br /><br /><br /><div style="width:auto" id="apDiv1">
 	<?php
 	
 		define('MAX_REC_PER_PAGE', 5);
-		$db = mysql_connect("localhost", "root", "") or die("Couldn't connect to db!");
-		mysql_select_db("bloodlist") or die("Couldn't select db!");
-		$rs = mysql_query("SELECT COUNT(*) FROM donar_list") or die("Count query error!");
-		list($total) = mysql_fetch_row($rs);
+		$db = mysqli_connect("localhost", "root", "", "bloodlist");
+		//mysql_select_db("bloodlist");
+		$rs = mysqli_query($db, "SELECT COUNT(*) FROM donar_list");
+		list($total) = mysqli_fetch_row($rs);
 		$total_pages = ceil($total / MAX_REC_PER_PAGE);
 		$page = intval(@$_GET["page"]);
 		
@@ -63,11 +99,17 @@
 		}
 		$start = MAX_REC_PER_PAGE * ($page - 1);
 		$max = MAX_REC_PER_PAGE;
-		$rs = mysql_query("SELECT * from donar_list LIMIT $start, 
-		$max") or die("donar_list query error!");
+		$rs = mysqli_query($db,"SELECT * from donar_list LIMIT $start, $max");
 	?>
+<div class="donars">
+<div class="donar_form">	
+<form action="" method="post" id="myForm">
+	Search By Group:<input type="text" name="name" id="name" placeholder="name" onkeyup="myfunction(this.value)">
+</form>
+</div>
 <h1 style="color:grey">Blood Donars List:</h1>
-	<table border="1" width="100%" style="text-align:center">
+	<!--<table border="1" width="100%" style="text-align:center">-->
+	<table id="example" class="display" border="1" width="100%" style="text-align:center">
 		<tr>
 			<th>Id</th>
 			<th>Name</th>
@@ -84,7 +126,7 @@
 		</tr>
 
 		<?php
-			while (list($donar_id,$donar_name, $donar_age,$donar_gender, $donar_dob, $donar_weight,$donar_state, $donar_city,$donar_pincode, $donar_mobile, $donar_email,$donar_bg ) = mysql_fetch_row($rs)) {
+			while (list($donar_id,$donar_name, $donar_age,$donar_gender, $donar_dob, $donar_weight,$donar_state, $donar_city,$donar_pincode, $donar_mobile, $donar_email,$donar_bg ) = mysqli_fetch_row($rs)) {
 		?>
 				<tr>
 					<td><?= htmlspecialchars($donar_id) ?></td>
@@ -104,7 +146,7 @@
 			}
 		?>
 	</table>
-
+</div>
 	<table border="0" cellpadding="5" align="center">
 		<tr>
 			<td>Pages:</td>
