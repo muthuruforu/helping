@@ -1,5 +1,5 @@
 /*
-SQLyog Community v11.52 (32 bit)
+SQLyog Community v11.52 (32 bitbit)
 MySQL - 5.5.27 : Database - bloodlist
 *********************************************************************
 */
