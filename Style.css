@@ -1,7 +1,7 @@
 *{margin:0px; padding:0px; /*font-family: 'Open Sans', sans-serif;*/}
 
 .main{width:1170px; margin:0 auto; border:none;}
-.banner1{width:100%; /*background:url(../blood/images/blood.jpg);*/ background-size:cover; float:left; z-index:999;}
+.banner1{width:100%; background:url(images/blood.jpg); background-size:cover; float:left; z-index:999;}
 
 
 .header {
